@@ -32,12 +32,18 @@ class Guess
   public function __construct(CardGame32 $cardGame, $selectedCard = null, bool $withHelp = true)
   {
     // TODO si $cardGame est null, affecter alors un jeu de 32 par défaut
+    if ($cardGame == null){
+      $cardGame = CardGame32::factoryCardGame32();
+    }
     $this->cardGame = $cardGame;
 
     if ($selectedCard) {
       $this->selectedCard = $selectedCard;
-    }  else {
+    }  
+    else {
       // TODO tirer aléatoirement une carte
+      // $selectedCard = $cardGame->getCard(rand(0, 31));
+      // $this->selectedCard = $selectedCard;
     }
 
     $this->withHelp = $withHelp;

@@ -27,10 +27,8 @@ class CardGame32
    */
   public function shuffle()
   {
-    // TODO (voir les fonctions sur les tableaux)
+    shuffle($this->cards);
   }
-
-  // TODO ajouter une méthode reOrder qui remet le paquet en ordre
 
   /** définir une relation d'ordre entre instance de Card.
    * à valeur égale (name) c'est l'ordre de la couleur qui prime
@@ -54,30 +52,67 @@ class CardGame32
    */
   public static function compare(Card $c1, Card $c2) : int
   {
-    // TODO code naïf, et de plus il faudra prendre en compte la couleur !
 
-    $c1Name = strtolower($c1->getName());
-    $c2Name = strtolower($c2->getName());
+    $c1NameStr = strtolower($c1->getName());
+    $c2NameStr = strtolower($c2->getName());
+    $c1ColorStr = strtolower($c1->getColor());
+    $c2ColorStr = strtolower($c2->getColor());
+    
+    $ordersNames=['7'=>7, '8'=>8, '9'=>9, '10'=>10, 'valet'=>11, 'dame'=>12, 'roi'=>13, 'as'=>14];
+    $ordersColors=['coeur'=>4, 'carreau'=>3, 'pique'=>2, 'trèfle'=>1];
 
-    if ($c1Name === $c2Name) {
+    $c1Name=$ordersNames[$c1NameStr];
+    $c2Name=$ordersNames[$c2NameStr];
+    $c1Color=$ordersColors[$c1ColorStr];
+    $c2Color=$ordersColors[$c2ColorStr];
+
+    if ($c1Name === $c2Name && $c1Color === $c2Color) {
         return 0;
+    }
+    if ($c1Name === $c2Name) {
+        return ($c1Color > $c2Color) ? +1 : -1;
     }
     return ($c1Name > $c2Name) ? +1 : -1;
   }
 
- // TODO manque PHPDoc
+  /**
+   * Crée un jeu de 32 cartes qui ont comme indice 0 à 31.
+   * 
+   * @return object
+   */
   public static function factoryCardGame32() : CardGame32 {
-     // TODO création d'un jeu de 32 cartes
-    $cardGame = new CardGame32([new Card('As', 'Trèfle'), new Card('2', 'Trèfle')]);
+    $cardGame = new CardGame32([new Card('As', 'Trèfle'), new Card('Roi', 'Trèfle'), new Card('Dame', 'Trèfle'), new Card('Valet', 'Trèfle'), new Card('10', 'Trèfle'), new Card('9', 'Trèfle'), new Card('8', 'Trèfle'), new Card('7', 'Trèfle'),
+    new Card('As', 'Pique'), new Card('Roi', 'Pique'),  new Card('Dame', 'Pique'), new Card('Valet', 'Pique'), new Card('10', 'Pique'), new Card('9', 'Pique'), new Card('8', 'Pique'), new Card('7', 'Pique'),
+    new Card('As', 'Carreau'), new Card('Roi', 'Carreau'), new Card('Dame', 'Carreau'), new Card('Valet', 'Carreau'), new Card('10', 'Carreau'), new Card('9', 'Carreau'), new Card('8', 'Carreau'), new Card('7', 'Carreau'),
+    new Card('As', 'Coeur'), new Card('Roi', 'Coeur'), new Card('Dame', 'Coeur'), new Card('Valet', 'Coeur'), new Card('10', 'Coeur'), new Card('9', 'Coeur'), new Card('8', 'Coeur'), new Card('7', 'Coeur')]);
 
     return $cardGame;
   }
 
-  // TODO manque PHPDoc
+  /**
+   * Permet de tirer une carte d'un jeu de carte avec un nombre donné par un utilisateur.
+   * Si l'index est supérieur à 31 (le jeu va de 0 à 31) alors on récupère le reste de la division de 
+   * l'index par 32 pour prendre le reste comme index, c'est comme si on repassait le jeu en boucle
+   * jusqu'à qu'on arrive à la carte dans la vraie vie.
+   * Si l'index est inférieur à 0, on fait une boucle en ajoutant 32 pour que l'index arrive entre
+   * 0 et 31 pour qu'on est une carte, c'est comme si on repassait le jeu de cartes mais à l'envers.
+   * 
+   * @param $index
+   * 
+   * @return object
+   */
   public function getCard($index) : Card {
-    // TODO naïf
+    if ($index > 31){
+      $index = $index % 32;
+    }
+    while($index < 0){
+      $index = 32 + $index;
+    }
     return  $this->cards[$index];
   }
 
-}
+  public function __toString(){
+    return 'CardGame32: '.count($this->cards).' carte(s)';
+  }
 
+}

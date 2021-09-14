@@ -13,8 +13,8 @@ class CardTest extends TestCase
   {
     $card = new Card('As', 'Trèfle');
     $this->assertEquals('As', $card->getName());
-    $card = new Card('2', 'Trèfle');
-    $this->assertEquals('2', $card->getName());
+    $card = new Card('7', 'Trèfle');
+    $this->assertEquals('7', $card->getName());
 
   }
 
@@ -35,27 +35,30 @@ class CardTest extends TestCase
 
   public function testCompareSameNameNoSameColor()
   {
-    // TODO
-    $this->fail("not implemented !");
+    $card1 = new Card('As', 'Trèfle');
+    $card2 = new Card('As', 'Pique');
+    $this->assertEquals(-1, CardGame32::compare($card1, $card2));
   }
 
-  public function testCompareNoSameCardNoSameColor()
+  public function testCompareNoSameNameNoSameColor()
   {
-    // TODO
-    $this->fail("not implemented !");
+    $card1 = new Card('Roi', 'Trèfle');
+    $card2 = new Card('Valet', 'Pique');
+    $this->assertEquals(1, CardGame32::compare($card1, $card2));
   }
 
-  public function testCompareNoSameCardSameColor()
+  public function testCompareNoSameNameSameColor()
   {
-    // TODO
-    $this->fail("not implemented !");
+    $card1 = new Card('7', 'Trèfle');
+    $card2 = new Card('8', 'Trèfle');
+    $this->assertEquals(-1, CardGame32::compare($card1, $card2));
   }
 
 
   public function testToString()
   {
-    //TODO vérifie que la représentation textuelle d'une carte est correcte
-    $this->fail("not implemented !");
+    $card = new Card('As', 'Trèfle');
+    $this->assertEquals('As Trèfle', $card->__toString());
   }
 
 }
